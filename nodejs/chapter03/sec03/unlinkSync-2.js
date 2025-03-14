@@ -7,4 +7,5 @@ if (!fs.existsSync('./text-2.txt')) {
     fs.unlink('./text-2.txt',()=>{
         console.log("file deleted")
     });
+
 }

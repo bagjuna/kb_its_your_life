@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="app">
+      <h2>{{message}}</h2>
+    </div>
+    
+    <script src="http://unpkg.com/vue"></script>
+    <script>
+      function addContact(name, mobile, home="없음", address="없음", email="없음") {
+        let str = `name=${name}, mobile=${mobile}, home=${home},` +
+                ` address=${address}, email=${email}`;
+        console.log(str);
+      }
+      let model = { message: 'Hello vue' };
+      let vm = Vue.createApp({
+        name: 'App',
+        data() {
+          return model;
+        },
+      }).mount('#app');
+    </script>
+  </body>
+</html>
