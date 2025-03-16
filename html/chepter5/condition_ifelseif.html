@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script>
+      let date = new Date();
+      let clock = date.getHours();
+      console.log(clock);
+
+      if (clock < 5) {
+        alert('잠을 자렴');
+      } else if (clock < 7) {
+        alert('준비');
+      } else if (clock < 9) {
+        alert('출근');
+      } else if (clock < 12) {
+        alert('빈둥 빈둥');
+      } else if (clock < 17) {
+        alert('식사');
+      } else {
+        alert('여러가지 업무를 수행합니다.');
+      }
+      alert(clock);
+    </script>
+  </head>
+  <body>
+    
+  </body>
+</html>

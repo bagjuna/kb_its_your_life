@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script>
+      window.onload = function () {
+        let headers = document.querySelectorAll('h1');
+        console.log(headers);
+
+        for (let i = 0; i < headers.length; i++) {
+          let header = headers[i];
+          // 문서 객체를 조작합니다.
+          header.style.color = 'orange';
+          header.style.background = 'red';
+          header.innerHTML = 'From JavaScript';
+        }
+      };
+    </script>
+  </head>
+  <body>
+    <h1>잘가요 그 흔한이별길을</h1>
+    <h1>나를 버리고 부디 꽃길만 걸어요</h1>
+    <h1>잘가요 외로운 내사랑아 나를 떠나서</h1>
+  </body>
+</html>
