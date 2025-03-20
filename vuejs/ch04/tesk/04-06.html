@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style></style>
+  </head>
+  <body>
+    <div id="app">
+      x : <input type="text" v-model.number="x" /> <br />
+      y : <input type="text" v-model.number="y" /> <br />
+      <div>{{sum}}</div>
+    </div>
+    <script src="https://unpkg.com/vue"></script>
+    <script>
+      let vm = Vue.createApp({
+        name: 'App',
+        data() {
+          return { x: 0, y: 0 };
+        },
+        computed: {
+          sum() {
+            return this.x + this.y;
+          },
+        },
+      }).mount('#app');
+    </script>
+  </body>
+</html>
