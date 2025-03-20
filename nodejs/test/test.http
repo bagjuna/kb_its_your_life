@@ -1,0 +1,13 @@
+
+
+POST http://localhost:3000/contracts
+Content-Type: application/json
+
+{
+  "name": "kim",
+  "email":"kim@aaa.bbb",
+  "phone" : "12345"
+}
+
+###
+GET http://localhost:3000/contracts:/1
