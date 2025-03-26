@@ -1,0 +1,27 @@
+<template>
+  <div style="border: solid 1px gray; padding: 5px;">
+    이름: <input type="text" v-model="name"/>
+    <button @click="$emit('nameChanged', {name})">이름 변경</button>
+  </div>
+</template>
+
+<script>
+export default {
+  name: 'InputName',
+  // emits: ['nameChanged'],
+  emits: {
+    nameChanged: (e) => {
+      return e.name && typeof e.name === 'string' && e.name.trim().length >= 3 ? true : false;
+    }
+  },
+  data() {
+    return {
+      name: ''
+    }
+  }
+}
+</script>
+
+<style lang="scss" scoped>
+
+</style>
