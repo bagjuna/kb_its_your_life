@@ -1,23 +1,26 @@
 <template>
   <div>
-    X : <input type="text" v-model.number="state.x" />
-    <br />
-    Y : <input type="text" v-model.number="state.y" />
-    <br />
-    <div>결과 : {{ result }}</div>
+    X : <input type="text" v-model.number="state.x"/>
+    <br/>
+    결과 : {{ state.result }}
   </div>
 </template>
 
 <script>
-import { reactive, computed } from 'vue';
+import {reactive, watch} from 'vue';
+
 export default {
-  name: 'Calc3',
+  name: 'Calc6',
   setup() {
-    const state = reactive({ x: 10, y: 30, result: 30 });
-    const result = computed(() => {
-      return  state.x + state.y;
-    });
-    return { state, result};
+    const state = reactive({x: 10, result: 30});
+    watch(
+        () => state.x,
+        (current, old) => {
+          console.log(current + " " + old);
+          state.result = current * 2;
+        }
+    )
+    return {state};
   },
 };
 </script>

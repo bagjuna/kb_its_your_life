@@ -31,7 +31,8 @@ export default {
     <div class="card card-default card-borderless">
       <div class="card-body">
         <InputTodo/>
-        <TodoList :todoList="todoList"/>
+        <TodoList
+            :todoList="todoList"/>
       </div>
     </div>
   </div>
