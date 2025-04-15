@@ -2,5 +2,8 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/_java/ch01" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/_java/ch02" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/vuejs/answer/vue3-quickstart" vcs="Git" />
   </component>
 </project>
