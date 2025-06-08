@@ -3,122 +3,152 @@ package Zcodingtest;
 import java.util.*;
 
 public class Main {
-    static int n, m;
-    static char[][] grid;
-    static int[] dx = {0, 1, 0, -1};
-    static int[] dy = {1, 0, -1, 0};
-    static int rx , ry , bx , by ;
+    static int N, M, fuel; //영역 NxN, 승객 수, 초기 연료
+    static int[][] map;
+    static Taxi taxi;
+    static Map<int[], int[]> passengers = new HashMap<>(); // 승객 1명의 출발점(key), 도착점(value)
+    static int[] dx = {-1, 1, 0, 0};
+    static int[] dy = {0, 0, -1, 1,};
+
+
+    static class Taxi {
+        int row, col;
+
+        Taxi(int row, int col) {
+            this.row = row;
+            this.col = col;
+        }
+    }
+
+    static class PassengerWithDistance implements Comparable<PassengerWithDistance> {
+        @Override
+        public int compareTo(PassengerWithDistance o) {
+            // 거리 오름차순, 행 오름차순, 열 오름차순
+            if (this.dist != o.dist) return Integer.compare(this.dist, o.dist);
+            if (this.row != o.row) return Integer.compare(this.row, o.row);
+            return Integer.compare(this.col, o.col);
+        }
+
+        int row, col, dist;
+
+        PassengerWithDistance(int row, int col, int dist) {
+            this.row = row;
+            this.col = col;
+            this.dist = dist;
+        }
+    }
+
     public static void main(String[] args) {
-       // 백준 입력값 처리
+		    /////////////////// 값 입력받기 //////////////////////////////////////////////
         Scanner sc = new Scanner(System.in);
-        n = sc.nextInt();
-        m = sc.nextInt();
-        sc.nextLine();
+        N = sc.nextInt();
+        M = sc.nextInt();
+        fuel = sc.nextInt();
 
-        grid = new char[n][m];
-        for (int i = 0; i < n; i++) {
-            String line = sc.nextLine();
-            for (int j = 0; j < m; j++) {
-                if (line.charAt(j) == 'R') {
-                    rx = i; // 빨간 구슬의 행 위치
-                    ry = j; // 빨간 구슬의 열 위치
-                } else if (line.charAt(j) == 'B') {
-                    bx = i; // 파란 구슬의 행 위치
-                    by = j; // 파란 구슬의 열 위치
-                }
-                grid[i][j] = line.charAt(j);
-            }
+        map = new int[N][N];
+        for (int i = 0; i < N; i++)
+            for (int j = 0; j < N; j++)
+                map[i][j] = sc.nextInt();
 
+        taxi = new Taxi(sc.nextInt() - 1, sc.nextInt() - 1);
+
+        for (int i = 0; i < M; i++) {
+            int startr = sc.nextInt() - 1;
+            int startc_ = sc.nextInt() - 1;
+            int endr = sc.nextInt() - 1;
+            int endc = sc.nextInt() - 1;
+            passengers.put(new int[]{startr, startc_}, new int[]{endr, endc});
         }
 
-        System.out.println(bfs());
+        for (int i = 0; i < M; i++) {
         
+            PassengerWithDistance customer = findNearestCustomer();
+            // 승객이 없는지 or 현재 연료로 갈 수 있는지
+            if (customer == null || customer.dist > fuel) {
+                System.out.println(-1);
+                return;
+            }
+            fuel -= customer.dist;
+            taxi.row = customer.row;
+            taxi.col = customer.col;
+            
+
+            int[] destination = passengers.get(new int[]{customer.row, customer.col});
+            int toDest = bfs(taxi.row, taxi.col, destination[0], destination[1]);
+            if (toDest == -1 || toDest > fuel) {
+                System.out.println(-1);
+                return;
+            }
+            fuel -= toDest;
+            fuel += toDest * 2;
+            taxi.row = destination[0];
+            taxi.col = destination[1];
+            // 
+            passengers.remove(new int[]{customer.row, customer.col});
+        }
+        System.out.println(fuel);
     }
+    ///////////////////////////////////////////////////////////////////////////////
 
-    static int bfs() {
+    static PassengerWithDistance findNearestCustomer() {
+        Queue<int[]> q = new LinkedList<>();
+        boolean[][] visited = new boolean[N][N];
+        q.offer(new int[]{taxi.row, taxi.col, 0});
+        visited[taxi.row][taxi.col] = true;
 
-        // queue에 시작점 예약 (red좌표, blue좌표, cnt)
-        Queue<State> q = new ArrayDeque<>();
-        Set<String> visited = new HashSet<>();
-        State start = new State(rx, ry, bx, by, 0);
-        q.add(start);
-        visited.add(start.forKey());
+        List<PassengerWithDistance> candidates = new ArrayList<>();
 
-        // while queue
         while (!q.isEmpty()) {
-            // 현재 상태 방문
-            State cur = q.poll();
-            // if cnt > 10 이면 return 0
-            if (cur.cnt > 10) return 0;
-
-            if (grid[cur.rx][cur.ry] == 'O') return 1;
-
-            // 다음 상태 예약
-            for (int dir = 0; dir < 4; dir++) {
-                // move() 함수를 통해 다음 위치 계산
-                int[] nextRed = move(cur.rx, cur.ry, dir);
-                int[] nextBlue = move(cur.bx, cur.by, dir);
-
-                // if blue가 구멍에 빠지면 continue
-                if (grid[nextBlue[0]][nextBlue[1]] == 'O') continue;
-
-                // 만약 red, blue 위치가 같으면 조정
-                if (nextRed[0] == nextBlue[0] && nextRed[1] == nextBlue[1]) {
-                    int redDist = Math.abs(nextRed[0] - cur.rx) + Math.abs(nextRed[1] - cur.ry);
-                    int blueDist = Math.abs(nextBlue[0] - cur.bx) + Math.abs(nextBlue[1] - cur.by);
-                    if (redDist > blueDist) {
-                        nextRed[0] -= dx[dir];
-                        nextRed[1] -= dy[dir];
-                    } else {
-                        nextBlue[0] -= dx[dir];
-                        nextBlue[1] -= dy[dir];
-                    }
-                }
-
-                // 방문 여부 확인 후 예약과 방문 표시
-                State nextState = new State(nextRed[0], nextRed[1], nextBlue[0], nextBlue[1], cur.cnt + 1);
-                if (!visited.contains(nextState.forKey())) {
-                    visited.add(nextState.forKey());
-                    q.add(nextState);
+            int[] cur = q.poll();
+            int r = cur[0], c = cur[1], dist = cur[2];
+            int[] p = new int[]{r, c};
+            
+            // 택시의 위치가 승객들의 출발지와 일치할 때
+            if (passengers.containsKey(p)) {
+                candidates.add(new PassengerWithDistance(r, c, dist));
+            }
+            
+            for (int d = 0; d < 4; d++) {
+                int nr = r + dx[d];
+                int nc = c + dy[d];
+                if (nr >= 0 && nr < N && nc >= 0 && nc < N && !visited[nr][nc] && map[nr][nc] == 0) {
+                    visited[nr][nc] = true;
+                    q.offer(new int[]{nr, nc, dist + 1});
                 }
             }
         }
 
-        return 0;
+        if (candidates.isEmpty()) return null;
+        candidates.sort((o1, o2) -> {
+            if (o1.dist != o2.dist) return Integer.compare(o1.dist, o2.dist);
+            if (o1.row != o2.row) return Integer.compare(o1.row, o2.row);
+            return Integer.compare(o1.col, o2.col);
+        });
+        // 대상에 맞는 승객 1명만 반환
+        return candidates.get(0);
     }
 
+    static int bfs(int startr, int startc, int endr, int endc) {
+        Queue<int[]> q = new LinkedList<>();
+        boolean[][] visited = new boolean[N][N];
+        q.offer(new int[]{startr, startc, 0});
+        visited[startr][startc] = true;
 
+        while (!q.isEmpty()) {
+            int[] cur = q.poll();
+            int r = cur[0], c = cur[1], dist = cur[2];
+            if (r == endr && c == endc) return dist;
 
-   static int[] move(int x, int y, int dir) {
-        int nx = x, ny = y;
-        while (true) {
-            nx += dx[dir];
-            ny += dy[dir];
-            if (grid[nx][ny] == '#') {
-                nx -= dx[dir];
-                ny -= dy[dir];
-                break;
+            for (int d = 0; d < 4; d++) {
+                int nr = r + dx[d];
+                int nc = c + dy[d];
+                if (nr >= 0 && nr < N && nc >= 0 && nc < N && !visited[nr][nc] && map[nr][nc] == 0) {
+                    visited[nr][nc] = true;
+                    q.offer(new int[]{nr, nc, dist + 1});
+                }
             }
-            if (grid[nx][ny] == 'O') {
-                break;
-            }
-        }
-        return new int[]{nx, ny};
-    }
-
-    static class State {
-        int rx, ry, bx, by, cnt;
-
-        State(int rx, int ry, int bx, int by, int cnt) {
-            this.rx = rx;
-            this.ry = ry;
-            this.bx = bx;
-            this.by = by;
-            this.cnt = cnt;
         }
 
-        public String forKey() {
-            return rx + "-" + ry + "-" + bx + "-" + by;
-        }
+        return -1;
     }
 }

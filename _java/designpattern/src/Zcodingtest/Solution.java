@@ -1,28 +1,30 @@
 package Zcodingtest;
-
-import java.util.*;
-
-class Solution {
-    public int solution(int n, int[][] computers) {
-        int answer = 0;
-        Set<Integer>[] arr = new HashSet[n];
-        for (int i = 0; i < n; i++) {
-            arr[i] = new HashSet();
-        }
-        for (int i = 0; i < computers.length; i++) {
-            for (int j = 0; j < computers[0].length; j++) {
-                if (i == j) continue;
-
-                if (computers[i][j] == 0) {
-                    if (!arr[i].contains(j) && !arr[j].contains(i)) {
-                        answer++;
-                        arr[i].add(j);
-                        arr[j].add(i);
-                    }
-
-                }
-            }
-        }
-        return answer;
-    }
-}
+//
+//import java.util.*;
+//
+//class Solution {
+//    public int solution(String s) {
+//        int answer = 0;
+//
+//        String temp;
+//        HashMap<String,Integer> set = new HashMap<>(
+//                new Comparator<>()
+//        );
+//        for (int i = 0; i < s.length(); i++) {
+//            for (int j = i; j < s.length(); j++) {
+//                temp = s.substring(j, s.length());
+//                set.add(temp);
+//            }
+//
+//        }
+//
+//
+//
+//        for (String word : set) {
+//            System.out.println(word);
+//        }
+//
+//        System.out.println("문자열 : " + s);
+//        return answer;
+//    }
+//}

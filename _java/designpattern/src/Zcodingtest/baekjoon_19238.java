@@ -18,6 +18,7 @@ public class baekjoon_19238 {
             this.col = col;
         }
 
+
         @Override
         public boolean equals(Object o) {
             // 현재 객체와 비교 대상이 같은 주소라면
@@ -45,7 +46,15 @@ public class baekjoon_19238 {
         }
     }
 
-    static class PassengerWithDistance {
+    static class PassengerWithDistance implements Comparable<PassengerWithDistance> {
+        @Override
+        public int compareTo(PassengerWithDistance o) {
+            // 거리 오름차순, 행 오름차순, 열 오름차순
+            if (this.dist != o.dist) return Integer.compare(this.dist, o.dist);
+            if (this.row != o.row) return Integer.compare(this.row, o.row);
+            return Integer.compare(this.col, o.col);
+        }
+
         int row, col, dist;
 
         PassengerWithDistance(int row, int col, int dist) {
@@ -136,11 +145,11 @@ public class baekjoon_19238 {
         }
 
         if (candidates.isEmpty()) return null;
-        candidates.sort(Comparator
-                .comparingInt((PassengerWithDistance p) -> p.dist)
-                .thenComparingInt(p -> p.row)
-                .thenComparingInt(p -> p.col));
-                
+        candidates.sort((o1, o2) -> {
+            if (o1.dist != o2.dist) return Integer.compare(o1.dist, o2.dist);
+            if (o1.row != o2.row) return Integer.compare(o1.row, o2.row);
+            return Integer.compare(o1.col, o2.col);
+        });
         // 대상에 맞는 승객 1명만 반환
         return candidates.get(0);
     }

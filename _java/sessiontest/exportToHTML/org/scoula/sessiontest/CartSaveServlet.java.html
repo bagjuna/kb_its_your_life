@@ -1,0 +1,58 @@
+<html>
+<head>
+<title>CartSaveServlet.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #e0957b;}
+.s1 { color: #c9c9d1;}
+.s2 { color: #e0957b; font-weight: bold;}
+.s3 { color: #62a362;}
+.s4 { color: #c9c9d1;}
+.s5 { color: #676773;}
+</style>
+</head>
+<body bgcolor="#1d1d26">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+CartSaveServlet.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">org.scoula.sessiontest</span><span class="s2">;</span>
+
+<span class="s0">import </span><span class="s1">jakarta.servlet.ServletException</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">jakarta.servlet.annotation.WebServlet</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">jakarta.servlet.http.HttpServlet</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">jakarta.servlet.http.HttpServletRequest</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">jakarta.servlet.http.HttpServletResponse</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">jakarta.servlet.http.HttpSession</span><span class="s2">;</span>
+
+<span class="s0">import </span><span class="s1">java.io.IOException</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">java.io.PrintWriter</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">java.util.ArrayList</span><span class="s2">;</span>
+
+<span class="s1">@WebServlet(</span><span class="s3">&quot;/cart_save&quot;</span><span class="s1">)</span>
+<span class="s0">public class </span><span class="s1">CartSaveServlet </span><span class="s0">extends </span><span class="s1">HttpServlet {</span>
+    <span class="s1">@Override</span>
+    <span class="s0">protected void </span><span class="s1">doGet(HttpServletRequest req</span><span class="s2">, </span><span class="s1">HttpServletResponse resp) </span><span class="s0">throws </span><span class="s1">ServletException</span><span class="s2">, </span><span class="s1">IOException {</span>
+        <span class="s1">resp.setContentType(</span><span class="s3">&quot;text/html; charset=UTF-8&quot;</span><span class="s1">)</span><span class="s2">;</span>
+        <span class="s1">PrintWriter out </span><span class="s4">= </span><span class="s1">resp.getWriter()</span><span class="s2">;</span>
+        <span class="s5">// 입력 파라미터 얻기</span>
+        <span class="s1">String product </span><span class="s4">= </span><span class="s1">req.getParameter(</span><span class="s3">&quot;product&quot;</span><span class="s1">)</span><span class="s2">;</span>
+        <span class="s5">//세션객체 얻기</span>
+        <span class="s1">HttpSession session </span><span class="s4">= </span><span class="s1">req.getSession()</span><span class="s2">;</span>
+        <span class="s1">ArrayList</span><span class="s4">&lt;</span><span class="s1">String</span><span class="s4">&gt; </span><span class="s1">list </span><span class="s4">= </span><span class="s1">(ArrayList</span><span class="s4">&lt;</span><span class="s1">String</span><span class="s4">&gt;</span><span class="s1">) session.getAttribute(</span><span class="s3">&quot;product&quot;</span><span class="s1">)</span><span class="s2">;</span>
+        <span class="s0">if </span><span class="s1">(list </span><span class="s4">== </span><span class="s0">null</span><span class="s1">) {</span>
+            <span class="s1">list </span><span class="s4">= </span><span class="s0">new </span><span class="s1">ArrayList</span><span class="s4">&lt;</span><span class="s1">String</span><span class="s4">&gt;</span><span class="s1">()</span><span class="s2">;</span>
+            <span class="s1">session.setAttribute(</span><span class="s3">&quot;product&quot;</span><span class="s2">, </span><span class="s1">list)</span><span class="s2">;</span>
+        <span class="s1">}</span>
+        <span class="s1">list.add(product)</span><span class="s2">;</span>
+        <span class="s1">out.print(</span><span class="s3">&quot;&lt;html&gt;&lt;body&gt;&quot;</span><span class="s1">)</span><span class="s2">;</span>
+        <span class="s1">out.print(</span><span class="s3">&quot;Product 추가!!&lt;br&gt;&quot;</span><span class="s1">)</span><span class="s2">;</span>
+        <span class="s1">out.print(</span><span class="s3">&quot;&lt;a href='session_product.jsp'&gt;상품 선택 페이지&lt;/a&gt;&lt;br&gt;&quot;</span><span class="s1">)</span><span class="s2">;</span>
+        <span class="s1">out.print(</span><span class="s3">&quot;&lt;a href='cart_view'&gt;장바구니 보기&lt;/a&gt;&quot;</span><span class="s1">)</span><span class="s2">;</span>
+        <span class="s1">out.print(</span><span class="s3">&quot;&lt;/body&gt;&lt;/html&gt;&quot;</span><span class="s1">)</span><span class="s2">;</span>
+        
+    <span class="s1">}</span>
+<span class="s1">}</span></pre>
+</body>
+</html>
