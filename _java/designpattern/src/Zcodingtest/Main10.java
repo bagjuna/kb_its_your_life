@@ -1,7 +1,16 @@
-import java.util.*;
+package Zcodingtest;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
 
-public class Main {
+/**
+ * 백준 14501번 퇴사
+ * https://www.acmicpc.net/problem/14501
+ * 시간복잡도: O(N^2)
+ * 공간복잡도: O(N)
+ */
+public class Main10 {
     public static void main(String[] args) {
         // 코드를 작성해주세요
         Scanner sc = new Scanner(System.in);
