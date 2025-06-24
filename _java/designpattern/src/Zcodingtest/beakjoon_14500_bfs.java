@@ -1,9 +1,14 @@
 package Zcodingtest;
 
-import java.util.*;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.StringTokenizer;
 
-public class Main11_bfs {
+// 백준 14500번 테트로미노
+public class beakjoon_14500_bfs {
     static int N, M;
     static int[][] map;
     static int max = 0;
@@ -12,12 +17,14 @@ public class Main11_bfs {
 
     static class Node {
         int x, y, sum, count;
+        boolean[][] visited;
 
-        Node(int x, int y, int sum, int count) {
+        Node(int x, int y, int sum, int count, boolean[][] visited) {
             this.x = x;
             this.y = y;
             this.sum = sum;
             this.count = count;
+            this.visited = visited;
         }
     }
 
@@ -37,7 +44,6 @@ public class Main11_bfs {
             }
         }
 
-        // 각 위치마다 탐색
         for (int i = 0; i < N; i++) {
             for (int j = 0; j < M; j++) {
                 bfs(i, j);
@@ -52,7 +58,7 @@ public class Main11_bfs {
         Queue<Node> q = new LinkedList<>();
         boolean[][] visited = new boolean[N][M];
         visited[x][y] = true;
-        q.add(new Node(x, y, map[x][y], 1));
+        q.add(new Node(x, y, map[x][y], 1, visited));
 
         while (!q.isEmpty()) {
             Node node = q.poll();
@@ -66,34 +72,29 @@ public class Main11_bfs {
                 int nx = node.x + dx[d];
                 int ny = node.y + dy[d];
 
-                if (nx < 0 || ny < 0 || nx >= N || ny >= M)
-                    continue;
+                if (nx < 0 || ny < 0 || nx >= N || ny >= M) continue;
+                if (node.visited[nx][ny]) continue;
 
-                q.add(new Node(nx, ny, node.sum + map[nx][ny], node.count + 1));
+                // 새 visited 복사
+                boolean[][] newVisited = new boolean[N][M];
+                for (int i = 0; i < N; i++) {
+                    System.arraycopy(node.visited[i], 0, newVisited[i], 0, M);
+                }
+                newVisited[nx][ny] = true;
 
+                q.add(new Node(nx, ny, node.sum + map[nx][ny], node.count + 1, newVisited));
             }
-
-
         }
-    }
-
-    static boolean[][] copyVisited(boolean[][] original) {
-        boolean[][] copy = new boolean[N][M];
-        for (int i = 0; i < N; i++) {
-            copy[i] = original[i].clone();
-        }
-        return copy;
     }
 
     static void checkT(int x, int y) {
-        // 중심을 기준으로 4방향 중 3개만 선택
         int wing = 0;
-        int min = Integer.MAX_VALUE;
         int sum = map[x][y];
+        int min = Integer.MAX_VALUE;
 
-        for (int i = 0; i < 4; i++) {
-            int nx = x + dx[i];
-            int ny = y + dy[i];
+        for (int d = 0; d < 4; d++) {
+            int nx = x + dx[d];
+            int ny = y + dy[d];
 
             if (nx < 0 || ny < 0 || nx >= N || ny >= M) continue;
 

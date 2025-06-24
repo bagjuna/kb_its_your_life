@@ -2,10 +2,10 @@ package Zcodingtest;
 
 import java.util.*;
 
-class Solution1 {
+class Solution18 {
 
     public static void main(String[] args) {
-        Solution1 solution = new Solution1();
+        Solution18 solution = new Solution18();
         int solution1 = solution.solution(new String[]{"LOOXS","OOOOX","OOOOO","OOOOO","EOOOO"});
         System.out.println(solution1);
 

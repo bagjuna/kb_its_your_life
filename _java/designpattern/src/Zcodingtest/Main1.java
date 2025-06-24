@@ -1,8 +1,8 @@
 package Zcodingtest;
 
-import java.util.*;
+import java.util.Scanner;
 
-public class Main {
+public class Main1 {
     static int N, M;
     // 부메랑 방향 (중심 기준)
     static int[] dx = {0, 1, 0, -1, 0}; // 아래, 오른쪽, 위, 왼쪽
