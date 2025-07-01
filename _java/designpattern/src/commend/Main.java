@@ -27,7 +27,7 @@ public class Main {
 
     public static void exit(){
         Scanner scanner = new Scanner(System.in);
-        System.out.print("종료할까요?(Y/n) ");
+        System.out.print("종료 할까요?(Y/n) ");
         String answer = scanner.nextLine();
 
         scanner.close();

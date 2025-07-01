@@ -10,6 +10,7 @@ public class Printer implements Printable {
     public Printer(String name) {
         this.name = name;
         heavyJob("Printer 인스턴스(" + name + ") 생성 중");
+
     }
 
     private void heavyJob(String msg) {
