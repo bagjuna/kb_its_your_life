@@ -1,21 +1,20 @@
 package org.scoula.board.service;
 
+import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
+import org.scoula.board.common.util.UploadFiles;
+import org.scoula.board.domain.BoardAttachmentVO;
+import org.scoula.board.domain.BoardVO;
+import org.scoula.board.dto.BoardDTO;
+import org.scoula.board.mapper.BoardMapper;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+
 import java.io.IOException;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
-
-import lombok.RequiredArgsConstructor;
-import org.scoula.board.common.util.UploadFiles;
-import org.scoula.board.domain.BoardAttachmentVO;
-import org.scoula.board.dto.BoardDTO;
-import org.springframework.stereotype.Service;
-import org.scoula.board.domain.BoardVO;
-import org.scoula.board.mapper.BoardMapper;
-import lombok.AllArgsConstructor;
-import lombok.extern.log4j.Log4j2;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
 
 @Log4j2
@@ -45,7 +44,7 @@ public class BoardServiceImpl implements BoardService {
     @Override
     public BoardDTO create(BoardDTO board) {
         log.info("게시글 등록: {}", board);
-        BoardVO boardVO = board.toVO();
+        BoardVO boardVO = board.toVo();
         mapper.create(boardVO);
         // 파일 업로드 처리
         List<MultipartFile> files = board.getFiles();
@@ -59,7 +58,14 @@ public class BoardServiceImpl implements BoardService {
     @Override
     public BoardDTO update(BoardDTO board) {
         log.info("게시글 수정: {}", board);
-        mapper.update(board.toVO());
+        BoardVO boardVO = board.toVo();
+        mapper.update(boardVO);
+        // 파일 업로드 처리
+
+        List<MultipartFile> files = board.getFiles();
+        if (files != null && !files.isEmpty()) {
+            upload(board.getNo(), files);
+        }
         return get(board.getNo());
     }
 
@@ -67,6 +73,7 @@ public class BoardServiceImpl implements BoardService {
     public BoardDTO delete(Long no) {
         log.info("게시글 삭제: {}", no);
         BoardDTO board = get(no);
+
         mapper.delete(no);
         return board;
     }

@@ -42,7 +42,7 @@ public class BoardDTO {
     }
 
     // DTO -> VO 변환
-    public BoardVO toVO(){
+    public BoardVO toVo(){
         return BoardVO.builder()
                 .no(no)
                 .title(title)
