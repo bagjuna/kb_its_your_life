@@ -6,11 +6,11 @@ import java.util.*;
 /**
  *
  */
-class Solution {
+class Solution26 {
 
 
     public static void main(String[] args) {
-        Solution solution = new Solution();
+        Solution26 solution26 = new Solution26();
         int n = 6;
         int s = 4;
         int a = 6;
@@ -19,7 +19,7 @@ class Solution {
                 {4, 1, 10}, {3, 5, 24}, {5, 6, 2}, {3, 1, 41},
                 {5, 1, 24}, {4, 6, 50}, {2, 4, 66}, {2, 3, 22}, {1, 6, 25}
         };
-        System.out.println(solution.solution(n, s, a, b, fares));
+        System.out.println(solution26.solution(n, s, a, b, fares));
     }
     static class Node {
         int to;

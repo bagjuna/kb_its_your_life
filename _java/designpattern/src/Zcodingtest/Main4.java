@@ -5,8 +5,8 @@ import java.io.*;
 
 
 public class Main4 {
-    static final int dx[] = {0, 0, 1, -1};
-    static final int dy[] = {1, -1, 0, 0};
+    static final int[] dx = {0, 0, 1, -1};
+    static final int[] dy = {1, -1, 0, 0};
     static int originMap[][];
     static int N, M;
     static int maxVal = Integer.MIN_VALUE;

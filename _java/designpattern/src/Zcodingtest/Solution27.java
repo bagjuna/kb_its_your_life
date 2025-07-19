@@ -2,9 +2,8 @@ package Zcodingtest;
 
 
 import java.util.*;
-import java.util.*;
 
-class Solution {
+class Solution27 {
     public int solution(int[][] jobs) {
         //✅ 작업이 요청되는 시점이 빠른 순서로 정렬한다.
 
